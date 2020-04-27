@@ -65,6 +65,13 @@ void greenToYellow(int green, int yellow)
   delay(changeDelay);
 }
 
+void yellowToRed(int yellow, int red )
+{
+  digitalWrite(yellow, LOW);
+  digitalWrite(red, HIGH);
+  delay(changeDelay);
+}
+
 void loop()
 {
   if ( digitalRead(westButton) == HIGH ) // request west>east traffic flow
@@ -74,23 +81,13 @@ void loop()
     {
       trafficWest = true; // change traffic flow flag to west>east
       delay(flowTime);  // give time for traffic to flow
-     /* digitalWrite(eastGreen, LOW); //change east-facing lights from green to yellow to red
-      digitalWrite(eastYellow, HIGH);
-      delay(changeDelay);*/
+     
       greenToYellow(eastGreen, eastYellow);
-      digitalWrite(eastYellow, LOW);
-      digitalWrite(eastRed, HIGH);
-      delay(changeDelay);
+
+      yellowToRed(eastYellow, eastRed);
 
       blinkYellowLight(westYellow);
-      /*for ( int i = 0; i < 5; i++ ) //blink yellow light
-        {
-
-        digitalWrite(westYellow, LOW);
-        delay(yellowBlinkTime);
-        digitalWrite(westYellow, HIGH);
-        delay(yellowBlinkTime);
-        }*/
+     
       digitalWrite(westYellow, LOW);
       digitalWrite(westRed, LOW); // change west-facing lights from red to green
       digitalWrite(westGreen, HIGH);
@@ -110,24 +107,13 @@ void loop()
     {
       trafficWest = false; // change traffic flow flag to east>west
       delay(flowTime);  // give time for traffic to flow
-      /*digitalWrite(westGreen, LOW);
-      // change west lights from green to yellow to red
-      digitalWrite(westYellow, HIGH);
-      delay(changeDelay);*/
+      
       greenToYellow(westGreen, westYellow);
-      digitalWrite(westYellow, LOW);
-      digitalWrite(westRed, HIGH);
-      delay(changeDelay);
+      
+      yellowToRed(westYellow, westRed);
 
       blinkYellowLight(eastYellow);
-      /*for ( int i = 0 ; i < 5 ; i++ ) // blink yellow light
-        {
-
-        digitalWrite(eastYellow, LOW);
-        delay(yellowBlinkTime);
-        digitalWrite(eastYellow, HIGH);
-        delay(yellowBlinkTime);
-        }*/
+     
       digitalWrite(eastYellow, LOW);
       digitalWrite(eastRed, LOW); // change east-facing lights from red to green
       digitalWrite(eastGreen, HIGH);
