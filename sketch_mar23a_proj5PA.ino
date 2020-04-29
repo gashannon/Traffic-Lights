@@ -71,7 +71,19 @@ void yellowToRed(int yellow, int red )
   digitalWrite(red, HIGH);
   delay(changeDelay);
 }
-
+void redToGreen(int yellow, int red, int green)
+{
+  digitalWrite(yellow, LOW);
+  digitalWrite(red, LOW);
+  digitalWrite(green, HIGH);
+}
+void pedestrianReadyToGo(int greenOn, int blueOff, int blueOn, int greenOff)
+{
+  digitalWrite(greenOn, HIGH);
+  digitalWrite(blueOff, LOW);
+  digitalWrite(blueOn, HIGH);
+  digitalWrite(greenOff, LOW);
+}
 void loop()
 {
   if ( digitalRead(westButton) == HIGH ) // request west>east traffic flow
@@ -81,23 +93,24 @@ void loop()
     {
       trafficWest = true; // change traffic flow flag to west>east
       delay(flowTime);  // give time for traffic to flow
-     
+
       greenToYellow(eastGreen, eastYellow);
 
       yellowToRed(eastYellow, eastRed);
 
       blinkYellowLight(westYellow);
-     
-      digitalWrite(westYellow, LOW);
-      digitalWrite(westRed, LOW); // change west-facing lights from red to green
-      digitalWrite(westGreen, HIGH);
+      /*
+        digitalWrite(westYellow, LOW);
+        digitalWrite(westRed, LOW); // change west-facing lights from red to green
+        digitalWrite(westGreen, HIGH);*/
+      redToGreen(westYellow, westRed, westGreen);
 
+      //digitalWrite(westpedlightGreen, HIGH); //west ped go
+      //digitalWrite(westpedlightBlue, LOW);
 
-      digitalWrite(westpedlightGreen, HIGH); //west ped go
-      digitalWrite(westpedlightBlue, LOW);
-
-      digitalWrite(eastpedlightBlue, HIGH); //east ped stopped
-      digitalWrite(eastpedlightGreen, LOW);
+      //digitalWrite(eastpedlightBlue, HIGH); //east ped stopped
+      //digitalWrite(eastpedlightGreen, LOW);
+      pedestrianReadyToGo(westpedlightGreen, westpedlightBlue, eastpedlightBlue, eastpedlightGreen);
     }
   }
 
@@ -107,22 +120,23 @@ void loop()
     {
       trafficWest = false; // change traffic flow flag to east>west
       delay(flowTime);  // give time for traffic to flow
-      
+
       greenToYellow(westGreen, westYellow);
-      
+
       yellowToRed(westYellow, westRed);
 
       blinkYellowLight(eastYellow);
-     
-      digitalWrite(eastYellow, LOW);
-      digitalWrite(eastRed, LOW); // change east-facing lights from red to green
-      digitalWrite(eastGreen, HIGH);
+      redToGreen(eastYellow, eastRed, eastGreen);
+      /*digitalWrite(eastYellow, LOW);
+        digitalWrite(eastRed, LOW); // change east-facing lights from red to green
+        digitalWrite(eastGreen, HIGH);*/
 
-      digitalWrite(westpedlightGreen, LOW); //west ped go
-      digitalWrite(westpedlightBlue, HIGH);
+      /*digitalWrite(westpedlightGreen, LOW); //west ped go
+        digitalWrite(westpedlightBlue, HIGH);
 
-      digitalWrite(eastpedlightBlue, LOW); //east ped stopped
-      digitalWrite(eastpedlightGreen, HIGH);
+        digitalWrite(eastpedlightBlue, LOW); //east ped stopped
+        digitalWrite(eastpedlightGreen, HIGH);*/
+      pedestrianReadyToGo(eastpedlightGreen, eastpedlightBlue, westpedlightBlue, westpedlightGreen);
     }
   }
 }
